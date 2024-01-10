@@ -1,0 +1,55 @@
+.timeline-steps {
+    display: flex;
+    justify-content: center;
+    /* flex-wrap: wrap */
+}
+
+.timeline-steps .timeline-step {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    
+}
+.timeline-steps .timeline-step:not(:last-child):after,
+.timeline-steps .timeline-step:not(:first-child):before {
+    content: "";
+    display: block;
+    border-top: .25rem dotted #FFD19E;
+    width: 1rem;
+    position: absolute;
+    top: 1rem ;
+}
+
+.timeline-steps .timeline-step:not(:last-child):after {
+    left: 100%; /* Place the line to the right of the timeline step */
+}
+
+.timeline-steps .timeline-step:not(:first-child):before {
+    right: 100%; /* Place the line to the left of the timeline step */
+}
+
+.timeline-steps .timeline-content {
+    width: 5rem;
+    text-align: center
+}
+
+.timeline-steps .timeline-content .inner-circle {
+    border-radius: 1.5rem;
+    height: 2rem;
+    width: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* .timeline-steps .timeline-content .inner-circle:before {
+    content: "";
+    background-color: #3b82f6;
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    /* min-width: 3rem; 
+    border-radius: 6.25rem;
+    opacity: .5
+} */
