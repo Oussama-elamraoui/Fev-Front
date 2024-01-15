@@ -100,10 +100,9 @@ const ChatModal: FC<MyModalProps> = ({ show, handleClose }) => {
     return (
         <>
             <div className={`chat-container ${show ? 'open' : ''}`}>
-
                 {show && (
                     <div className="chat-window" ref={chatHistoryRef}>
-                        <div className="d-flex align-items-center py-1 position-fixed controller-bar-chat" style={{ backgroundColor: '#fd8107',height: '9%', zIndex: '1000', }} >
+                        <div className="d-flex align-items-center py-1 position-fixed controller-bar-chat" style={{ backgroundColor: '#fd8107', height: '9%', zIndex: '1000', }} >
                             <div className="position-relative" style={{ paddingLeft: '10px' }}>
                                 <img src={IA_M3ak} className="rounded-circle mr-3" alt="" style={{ height: '30px', width: '30px' }} />
                             </div>

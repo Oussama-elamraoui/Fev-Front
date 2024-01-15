@@ -47,7 +47,7 @@ const ChatHeader = ({ selectedUser, isHide }: ChatHeaderProps) => {
 
   return (
     <>
-    
+
       <div className="d-flex pb-2 border-bottom align-items-center">
         <img
           src={selectedUser.avatar}
@@ -85,7 +85,7 @@ const ChatHeader = ({ selectedUser, isHide }: ChatHeaderProps) => {
                   onClick={() => handleVideocallModalShow()}
                 ></i>
               </Dropdown.Toggle>
-            </Dropdown>  
+            </Dropdown>
             <i className="bi bi-x-lg cursor-pointer" onClick={isHide}></i>
             {/* <Dropdown as="li" className="list-inline-item fs-18">
               <Dropdown.Toggle
@@ -269,14 +269,14 @@ const UserMessage = ({ message, toUser }: UserMessageProps) => {
 
 interface ChatAreaProps {
   selectedUser: ChatUserType;
-  displayModalChatArea:boolean;
-  userMessage?:string;
-  idPatient?:number;
+  displayModalChatArea: boolean;
+  userMessage?: string;
+  idPatient?: number;
 
 }
 
 // ChatArea
-const ChatArea = ({selectedUser,displayModalChatArea,userMessage,idPatient}: ChatAreaProps) => {
+const ChatArea = ({ selectedUser, displayModalChatArea, userMessage, idPatient }: ChatAreaProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const [toUser] = useState<ChatUserType>({
@@ -360,101 +360,233 @@ const ChatArea = ({selectedUser,displayModalChatArea,userMessage,idPatient}: Cha
     setChatHistory([...modifiedChatHistory]);
     reset();
   };
+  const [show, setShow] = useState<boolean>(false);
   useEffect(() => {
     setDisplayChat(displayModalChatArea);
-    
-  }, [selectedUser,displayModalChatArea]);
-  const [displayChat,setDisplayChat]=useState<boolean>(displayModalChatArea)
-  const isHide=()=>{
+
+  }, [selectedUser, displayModalChatArea]);
+  const [displayChat, setDisplayChat] = useState<boolean>(displayModalChatArea)
+  const isHide = () => {
     setDisplayChat(!displayChat)
+  }
+  useEffect(() => {
+    fetchEmployees();
+  }, [])
+  const [employees, setEmployees] = useState<any[]>([]);
+  const [focosedMembers, setFocusedMembers] = useState<"empl" | "patient">("empl")
+  const fetchEmployees = async () => {
+    try {
+      const response = await fetch('https://backend.hnam3ak.ma/api/AllEmployees');
+      if (response.ok) {
+        const data = await response.json();
+        // Extract employees from the response and set in state
+        const allEmployees = Object.values(data.employees).flatMap((empArray) => empArray);
+        setEmployees(allEmployees);
+      } else {
+        console.error('Failed to fetch employees');
+      }
+
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+    }
+  };
+  const [allPatients, setPatients] = useState<any[]>([]);
+  const fetchPatient= async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/allVictimes');
+      if (response.ok) {
+        const data = await response.json();
+        // Extract employees from the response and set in state
+        const allPatient = Object.values(data.employees).flatMap((empArray) => empArray);
+        setPatients(allPatient);
+      } else {
+        console.error('Failed to fetch Patient');
+      }
+
+    } catch (error) {
+      console.error('Error fetching Patient:', error);
+    }
+  };
+  const handleReciver = (empl: object) => {
+
   }
   return (
     <>
-    <div className={`profile ${!displayChat? 'd-none' : ''}`} >
-      <Card style={{ height: '600px', padding: '0px' }}>
-        <Card.Body style={{ margin: '0px' }}>
-          {loading && <Loader />}
-          <ChatHeader selectedUser={selectedUser} isHide={isHide} />
+      <div className={`profile ${!displayChat ? 'd-none' : ''}`} >
+        <Card style={{ height: '600px', padding: '0px' }}>
+          <Card.Body style={{ margin: '0px' }}>
+            {loading && <Loader />}
+            <ChatHeader selectedUser={selectedUser} isHide={isHide} />
 
-          <div className="mt-1">
-            <Scrollbar style={{ height: "300px", width: "100%" }}>
-              <ul className="conversation-list px-0 h-100">
-                {(chatHistory || []).map((item, index) => {
-                  return (
-                    <React.Fragment key={index}>
-                      <li className="position-relative">
-                        <hr />
-                        <h4>
-                          <span className="badge bg-light text-dark position-absolute top-0 start-50 translate-middle">
-                            {item.day}
-                          </span>
-                        </h4>
-                      </li>
-                      {(item.messages || []).map((message, index) => {
-                        return (
-                          <UserMessage
-                            key={index}
-                            message={message}
-                            toUser={toUser}
-                          />
-                        );
-                      })}
-                    </React.Fragment>
-                  );
-                })}
-              </ul>
-            </Scrollbar>
+            <div className="mt-1">
+              <Scrollbar style={{ height: "300px", width: "100%" }}>
+                <ul className="conversation-list px-0 h-100">
+                  {(chatHistory || []).map((item, index) => {
+                    return (
+                      <React.Fragment key={index}>
+                        <li className="position-relative">
+                          <hr />
+                          <h4>
+                            <span className="badge bg-light text-dark position-absolute top-0 start-50 translate-middle">
+                              {item.day}
+                            </span>
+                          </h4>
+                        </li>
+                        {(item.messages || []).map((message, index) => {
+                          return (
+                            <UserMessage
+                              key={index}
+                              message={message}
+                              toUser={toUser}
+                            />
+                          );
+                        })}
+                      </React.Fragment>
+                    );
+                  })}
+                </ul>
+              </Scrollbar>
 
-            <div className=" bg-light p-1 rounded ">
-              <form
-                noValidate
-                name="chat-form"
-                id="chat-form"
-                onSubmit={handleSubmit(sendChatMessage)}
-              >
-                <div className="row">
-                  <div className="col mb-1 mb-sm-0">
-                    <FormInput
-                      type="text"
-                      name="newMessage"
-                      className="border-0"
-                      placeholder="Enter your text"
-                      register={register}
-                      key="newMessage"
-                      errors={errors}
-                      control={control}
-                      style={{ width: '100%' }}
-                    />
-                  </div>
-  
-                  <div className="col-sm-auto">
-                    <div className="btn-group">
-                      {/* <Link to="#" className="btn btn-light">
+              <div className=" bg-light p-1 rounded ">
+                <form
+                  noValidate
+                  name="chat-form"
+                  id="chat-form"
+                  onSubmit={handleSubmit(sendChatMessage)}
+                >
+                  <div className="row">
+                    <div className="col mb-1 mb-sm-0">
+                      <FormInput
+                        type="text"
+                        name="newMessage"
+                        className="border-0"
+                        placeholder="Enter your text"
+                        register={register}
+                        key="newMessage"
+                        errors={errors}
+                        control={control}
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+
+                    <div className="col-sm-auto">
+                      <div className="btn-group">
+                        {/* <Link to="#" className="btn btn-light">
                         <i className="bi bi-emoji-smile fs-18"></i>
                       </Link>
                       <Link to="#" className="btn btn-light">
                         <i className="bi bi-paperclip fs-18"></i>
                       </Link>*/}
-                      <div  className="btn btn-light">
-                      <img src={iconShare} className="ml-0 cursor-pointer" alt="" style={{width:'20px',height:'20px'}}/>
-                      </div> 
-                      
-                      <button
-                        
-                        type="submit"
-                        className="btn btn-success chat-send"
-                      >
-                        <i className="uil uil-message"></i>
-                      </button>
-                      
+                        {show &&
+                          <div style={{ width: 'clamp(150px,300px,300px)', height: '270px', right: '0px', bottom: '40px', backgroundColor: 'white', zIndex: '2000' }} className="position-absolute rounded select-share px-1">
+                            <div className="input-group rounded mb-2 " style={{ width: '100%', height: '20px', top: '10px' }}>
+                              <input type="search" className="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" style={{ height: '30px' }} />
+                              {/* <span className="input-group-text border-0" id="search-addon">
+                            
+                          </span> */}
+                              <div className="d-flex justify-content-center align-items-center">
+
+                                <span className="border rounded px-2" style={{ height: '30px', paddingTop: '4px', width: "40px" }}><i className="bi bi-search"></i></span>
+
+                              </div>
+
+                            </div>
+                            <div className="mt-4 displayEmpl" style={{ overflow: 'auto', height: '184px' }}>
+                              { 
+                              focosedMembers==='empl' ?
+                              employees.map((item, index) => {
+                                return (
+                                  <div className="row border rounded" style={{ height: '50px' }} key={index}>
+                                    <div className="col-md-2 d-flex align-items-center justify-content-center" style={{}}>
+                                      {item.user.sexe === 'Homme' ? (<img className="rounded-circle shadow-4" src="https://cdn3.iconfinder.com/data/icons/many-peoples-vol-2/512/16-1024.png" alt="" style={{ width: '40px', height: '40px' }}></img>) :
+                                        (<img className="rounded-circle shadow-4" src="https://cdn5.vectorstock.com/i/1000x1000/61/44/avatar-business-woman-graphic-vector-9646144.jpg" alt="" style={{ width: '40px', height: '40px' }}></img>)}
+
+                                    </div>
+                                    <div className="col-md-8">
+                                      <div className="position-absolute mt-1">
+                                        {item.user.fullName === item.user.fullName.slice(0, 23) ? <text style={{ fontSize: "0.8em" }}>  {item.user.fullName}</text> : <text style={{ fontSize: "0.8em" }}>{item.user.fullName.slice(0, 23)}...</text>}
+                                        <p className="text-muted" style={{ fontSize: "0.5em", color: 'GrayText' }}>{item.centre}</p>
+                                      </div>
+                                    </div>
+                                    <div className="col-md-2 d-flex align-items-center justify-content-center">
+                                      <input
+                                        className="form-check-input"
+                                        id={`flexCheckDefault_${index}`}
+                                        type="checkbox"
+                                        style={{ color: 'orange', height: '30px', width: '30px' }}
+                                        value={JSON.stringify(item.user)}
+                                        onChange={(e) => handleReciver(JSON.parse(e.target.value))} />
+                                    </div>
+                                  </div>)
+                              }):
+                              allPatients.map((item,index)=>{
+                                return(
+                                  <div className="row border rounded" style={{ height: '50px' }} key={index}>
+                                  <div className="col-md-2 d-flex align-items-center justify-content-center" style={{}}>
+                                    {item.victim.user ? (<img className="rounded-circle shadow-4" src="https://cdn5.vectorstock.com/i/1000x1000/61/44/avatar-business-woman-graphic-vector-9646144.jpg" alt="" style={{ width: '40px', height: '40px' }}></img>) :
+                                      (<img className="rounded-circle shadow-4" src="https://cdn5.vectorstock.com/i/1000x1000/61/44/avatar-business-woman-graphic-vector-9646144.jpg" alt="" style={{ width: '40px', height: '40px' }}></img>)}
+
+                                  </div>
+                                  <div className="col-md-8">
+                                    <div className="position-absolute mt-1">
+                                      {item.victim.user ? item.victim.user.fullName === item.victim.user.fullName.slice(0, 23) ? <text style={{ fontSize: "0.8em" }}>  {item.victim.user.fullName}</text> : <text style={{ fontSize: "0.8em" }}>{item.victim.user.fullName.slice(0, 23)}...</text>
+                                    :
+                                    item.victim.fullName === item.victim.fullName.slice(0, 23) ? <text style={{ fontSize: "0.8em" }}>  {item.victim.fullName}</text> : <text style={{ fontSize: "0.8em" }}>{item.victim.fullName.slice(0, 23)}...</text>
+                                    }
+                                      <p className="text-muted" style={{ fontSize: "0.5em", color: 'GrayText' }}>
+                                        {item.victim.user? item.victim.user.sexe : item.victim.sexe}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="col-md-2 d-flex align-items-center justify-content-center">
+                                    <input
+                                      className="form-check-input"
+                                      id={`flexCheckDefault_${index}`}
+                                      type="checkbox"
+                                      style={{ color: 'orange', height: '30px', width: '30px' }}
+                                      value={JSON.stringify(item)}
+                                      onChange={(e) => handleReciver(JSON.parse(e.target.value))} />
+                                  </div>
+                                </div>
+                                )
+                              }
+                              )
+                            }
+
+                            </div>
+                            <div className="row ">
+                              <div className="col-md-6 py-auto d-flex justify-content-center align-items-center border cursor-pointer rounded" style={focosedMembers === 'empl' ? { backgroundColor: '#fbebda' } : {}} onClick={() => setFocusedMembers('empl')}>
+                                Employee
+                              </div>
+                              <div className="col-md-6 d-flex justify-content-center align-items-center justify-items-center border cursor-pointer rounded" style={focosedMembers === 'patient' ? { backgroundColor: '#fbebda' } : {}} onClick={() => {
+                                setFocusedMembers('patient')
+                              }}>
+                                Patient
+                                {/* <button className="rounded" style={{ height: '30px', paddingTop: '4px', backgroundColor: '#6dd669',width:'100%'}}>send</button> */}
+                              </div>
+                            </div>
+                          </div>
+                        }
+
+                        <div className="btn btn-light" onClick={() => setShow(!show)}>
+                          <img src={iconShare} className="ml-0 cursor-pointer" alt="" style={{ width: '20px', height: '20px' }} />
+                        </div>
+
+                        <button
+                          type="submit"
+                          className="btn btn-success chat-send"
+                        >
+                          <i className="uil uil-message"></i>
+                        </button>
+
+                      </div>
                     </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
-          </div>
-        </Card.Body>
-      </Card>
+          </Card.Body>
+        </Card>
       </div>
     </>
   );

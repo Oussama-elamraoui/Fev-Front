@@ -10,18 +10,18 @@ const InfoS = () => {
           <Form.Control as="select" name="milieuResidence" id="milieuResidence" style={{width:'100%'}}>
             {/* Add options dynamically according to your data */}
             <option value="">Select Milieu</option>
-            <option value="milieu1">Urbain</option>
-            <option value="milieu2">Rural</option>
+            <option value="Urbain">Urbain</option>
+            <option value="Rural">Rural</option>
             {/* Add more options */}
           </Form.Control>
         </Col>
         <Col>
-          <Form.Label htmlFor="milieuResidenceArabic" className="floatLabelAr">وسط الإقامة</Form.Label>
+          <Form.Label htmlFor="milieuResidenceArabic" className='d-flex justify-content-end'>وسط الإقامة</Form.Label>
           <Form.Control as="select" name="milieuResidence" id="milieuResidenceArabic" dir='rtl' style={{width:'100%'}} className='d-flex justify-content-end'>
             {/* Add options dynamically according to your data */}
             <option value="">اختر وسط الإقامة</option>
-            <option value="milieu1AR">حضري</option>
-            <option value="milieu2AR">قروي</option>
+            <option value="حضري">حضري</option>
+            <option value="قروي">قروي</option>
             {/* Add more options */}
           </Form.Control>
         </Col>
@@ -29,7 +29,7 @@ const InfoS = () => {
 
       <Row>
         <Col>
-          <Form.Label htmlFor="situationMatrimonial">Situation matrimoniale</Form.Label>
+          <Form.Label htmlFor="situationMatrimonial" >Situation matrimoniale</Form.Label>
           <Form.Control as="select" name="situationMatrimonial" id="situationMatrimonial" style={{width:'100%'}}>
             {/* Add options dynamically according to your data */}
             <option value="">Select Situation</option>
@@ -41,7 +41,7 @@ const InfoS = () => {
           </Form.Control>
         </Col>
         <Col>
-          <Form.Label htmlFor="situationMatrimonialArabic" className="floatLabelAr">الحالة العائلية</Form.Label>
+          <Form.Label htmlFor="situationMatrimonialArabic"  className='d-flex justify-content-end'>الحالة العائلية</Form.Label>
           <Form.Control as="select" name="situationMatrimonial" id="situationMatrimonialArabic" dir='rtl' style={{width:'100%'}} className='d-flex justify-content-end'>
             {/* Add options dynamically according to your data */}
             <option value="">اختر الحالة العائلية</option>

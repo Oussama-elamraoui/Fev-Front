@@ -91,7 +91,6 @@ const Profile = () => {
   };
   useEffect(() => {
     fetchEmployees();
-    console.log(employees[0]);
   }, [])
   const fetchEmployees = async () => {
     try {

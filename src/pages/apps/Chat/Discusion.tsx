@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import './style.css'
 // import './style2.scss'
@@ -14,6 +14,7 @@ import ChatArea from "./ChatArea";
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import Modal from '@mui/material/Modal';
 // components
+import hna_M3ak from '../../../assets/images/logo-dark.png';
 import PageTitle from "../../../components/PageTitle";
 // dummy data
 import { USERS, ChatUserType } from "./data";
@@ -97,11 +98,33 @@ const SmallAvatar = styled(Avatar)(({ theme }) => ({
   height: 22,
   border: `2px solid ${theme.palette.background.paper}`,
 }));
-interface ProfilePictureProps {
-  imageSrc: string;
-  name: string;
-  role: string;
+
+
+export interface ProfilePictureProps {
+  id: number;
+  identifier: string;
+  specialite?: null;
+  centre: string;
+  id_user: number;
+  created_at: string;
+  updated_at: string;
+  user: User;
 }
+export interface User {
+  id: number;
+  fullName: string;
+  cin: string;
+  phone: string;
+  email: string;
+  email_verified_at?: null;
+  dateN: string;
+  sexe: string;
+  role: string;
+  image?: null;
+  created_at: string;
+  updated_at: string;
+}
+
 // ChatApp
 const Discusion = () => {
   const [user, setUser] = useState<ChatUserType[]>([...USERS]);
@@ -123,26 +146,7 @@ const Discusion = () => {
     'medecin',
     'psy',
   ];
-  const employee = [
-    'assistant',
-    'admin',
-    'psy',
-    'medecin',
-    'admin',
-    'assistant',
-    'psy',
-    'medecin',
-    'psy',
-    'admin',
-    'medecin',
-    'assistant',
-    'psy',
-    'assistant',
-    'medecin',
-    'psy',
-    'medecin',
-    'medecin',
-  ]
+  const[infEmpl,setInfoEmpl]=useState<ProfilePictureProps>()
   const [selectedUser, setSelectedUser] = useState<ChatUserType>(USERS[1]);
   const activateUser = (user: ChatUserType) => {
     if (!displayModalChatArea) {
@@ -151,36 +155,43 @@ const Discusion = () => {
     setSelectedUser(user);
 
   };
-  const ProfilePicture: React.FC<ProfilePictureProps> = ({ imageSrc, name, role }) => {
+  const ProfilePicture: React.FC<{ item: ProfilePictureProps }> = ({ item }) => {
     const [isHovered, setHovered] = useState(false);
-
     const handleMouseEnter = () => {
       setHovered(true);
+
     };
 
     const handleMouseLeave = () => {
       setHovered(false);
     };
-
+    const getInitials = (name: string) => {
+      const nameArray = name.split(' ');
+      const initials = nameArray.map(word => word.charAt(0).toUpperCase()).join('');
+      return initials;
+    }
     return (
 
       <div className={`profile-picture ${isHovered ? 'hovered shadow-lg ' : ''} mb-3`} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         {/* <img src={imageSrc} alt="User-Profile-Image" className="img" /> */}
-        {role === 'assistant' && <Avatar alt="Remy Sharp" style={{ height: '100%', width: "100%", backgroundColor: '#86ecf1', fontFamily: 'sans-serif', fontSize: '30px' }}  >AS</Avatar>}
-        {role === 'admin' && <Avatar alt="Remy Sharp" style={{ height: '100%', width: "100%", backgroundColor: '#f3ab83', fontFamily: 'sans-serif', fontSize: '30px' }}  >US</Avatar>}
-        {role === 'medecin' && <Avatar alt="Remy Sharp" style={{ height: '100%', width: "100%", backgroundColor: '#97f676', fontFamily: 'sans-serif', fontSize: '30px' }}  >ME</Avatar>}
-        {role === 'psy' && <Avatar alt="Remy Sharp" style={{ height: '100%', width: "100%", backgroundColor: '#6a84f7', fontFamily: 'sans-serif', fontSize: '30px' }}  >PS</Avatar>}
+        {item.user.role === "assistant sociale" && <Avatar alt="Remy Sharp" style={{ height: '100%', width: "100%", backgroundColor: '#86ecf1', fontFamily: 'sans-serif', fontSize: '30px' }}  >{getInitials(item.user.fullName)}</Avatar>}
+        {item.user.role === "medecin" && <Avatar alt="Remy Sharp" style={{ height: '100%', width: "100%", backgroundColor: '#f3ab83', fontFamily: 'sans-serif', fontSize: '30px' }}  >{getInitials(item.user.fullName)}</Avatar>}
+        {item.user.role === "psy" && <Avatar alt="Remy Sharp" style={{ height: '100%', width: "100%", backgroundColor: '#97f676', fontFamily: 'sans-serif', fontSize: '30px' }}  >{getInitials(item.user.fullName)}</Avatar>}
+        {item.user.role === "assistant comm" && <Avatar alt="Remy Sharp" style={{ height: '100%', width: "100%", backgroundColor: '#6a84f7', fontFamily: 'sans-serif', fontSize: '30px' }}  >{getInitials(item.user.fullName)}</Avatar>}
+        {item.user.role === "admin" && <Avatar alt="Remy Sharp" style={{ height: '100%', width: "100%", backgroundColor: '#6a84f7', fontFamily: 'sans-serif', fontSize: '30px' }}>{getInitials(item.user.fullName)}</Avatar>}
+        {item.user.role === "ong" && <Avatar alt="Remy Sharp" style={{ height: '100%', width: "100%", backgroundColor: '#6a84f7', fontFamily: 'sans-serif', fontSize: '30px' }}>{getInitials(item.user.fullName)}</Avatar>}
+        {item.user.role === "tpme" && <Avatar alt="Remy Sharp" style={{ height: '100%', width: "100%", backgroundColor: '#6a84f7', fontFamily: 'sans-serif', fontSize: '30px' }}>{getInitials(item.user.fullName)}</Avatar>}
         <div className={`overlay ${isHovered ? 'show' : ''}`}>
           <MessageIcon sx={{ mr: '10px' }} style={{ cursor: 'pointer' }} onClick={() => {
             setSelectedUser({
-              id: 1,
-              name: 'Medcin',
+              id: item.id,
+              name: item.user.fullName,
               avatar: 'https://img.freepik.com/vecteurs-premium/jeune-femme-souriante-ann-avatar-3d-vecteur-personnes-personnage-illustration-cartoon-style-minimal_365941-738.jpg',
               totalUnread: 2,
               userStatus: "busy",
             }); setDisplayModalChatArea(true)
           }}></MessageIcon>
-          <ReadMoreIcon style={{ cursor: 'pointer' }} onClick={handleShow}></ReadMoreIcon>
+          <ReadMoreIcon style={{ cursor: 'pointer' }} onClick={()=>{handleShow();setInfoEmpl(item)}}></ReadMoreIcon>
         </div>
         {/* <div className="NameContainer">{name}</div> */}
       </div>
@@ -195,9 +206,31 @@ const Discusion = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const [employees, setEmployees] = useState<any[]>([]);
+  const [focosedMembers, setFocusedMembers] = useState<"empl" | "patient">("empl")
+
+  const fetchEmployees = async () => {
+    try {
+      const response = await fetch('https://backend.hnam3ak.ma/api/AllEmployees');
+      if (response.ok) {
+        const data = await response.json();
+        // Extract employees from the response and set in state
+        const allEmployees = Object.values(data.employees).flatMap((empArray) => empArray);
+        setEmployees(allEmployees);
+      } else {
+        console.error('Failed to fetch employees');
+      }
+
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEmployees()
+  }, [])
+
   const InfoEmp = () => {
-
-
     return (
       <Modal
         keepMounted
@@ -209,37 +242,37 @@ const Discusion = () => {
           <div className="row">
             <div className="text-center card-box">
               <div className="member-card pb-2">
-                <div className="thumb-lg member-thumb mx-auto">
-                  <img src="https://bootdey.com/img/Content/avatar/avatar2.png" className="rounded-circle img-thumbnail" alt="profile-image" style={{width:'100px'}}/></div>
+                <div className="thumb-lg member-thumb mx-auto background-none">
+                  <img src={hna_M3ak} className="rounded-circle" alt="profile-image" style={{ width: '100px' }} /></div>
                 <div className="">
-                  <h4>Psychologue</h4>
-                  <p className="text-muted">@email <span className="text-orange" style={{color:'orange'}}>psy@gmail.com</span></p>
+                 <h4>{infEmpl?.user.fullName}</h4>
+                  <p className="text-muted">@email <span className="text-orange" style={{ color: 'orange' }}>{infEmpl?.user.email}</span></p>
                 </div>
-                <button type="button" className="mt-3 waves-effect w-md waves-light border-none rounded" style={{backgroundColor:'orange'}}>Message Now</button>
+                <button type="button" className="mt-3 waves-effect w-md waves-light border-none rounded" style={{ backgroundColor: 'orange' }}>Message Now</button>
                 <div className="mt-1">
                   <div className="row">
                     <div className="col-3">
                       <div className="mt-3">
-                        <h4>CIN</h4>
-                        <p className="mb-0 text-muted">TA177853</p>
+                        <h4>Center</h4>
+                        <p className="mb-0 text-muted">{infEmpl?.centre}</p>
                       </div>
                     </div>
                     <div className="col-3">
                       <div className="mt-3">
                         <h4>Phone</h4>
-                        <p className="mb-0 text-muted">0654345355</p>
+                        <p className="mb-0 text-muted">{infEmpl?.user.phone}</p>
                       </div>
                     </div>
                     <div className="col-3">
                       <div className="mt-3">
                         <h4>Genre</h4>
-                        <p className="mb-0 text-muted">Femme</p>
+                        <p className="mb-0 text-muted">{infEmpl?.user.sexe}</p>
                       </div>
                     </div>
                     <div className="col-3">
                       <div className="mt-3">
-                        <h4>Date de naissance</h4>
-                        <p className="mb-0 text-muted">20/03/2000</p>
+                        <h4>Naissance</h4>
+                        <p className="mb-0 text-muted">{infEmpl?.user.dateN}</p>
                       </div>
                     </div>
                   </div>
@@ -289,14 +322,16 @@ const Discusion = () => {
       {/* new list */}
       <div className="container">
         <div className="row ">
-          {employee.map((item, index) => (
+          {employees.map((item, index) => (
             <React.Fragment key={index}>
+
+              <div className="col-sm-3">
+                <ProfilePicture item={item} />
+              </div>
               {/* Adjust the column size based on your design */}
-              {personName.length === 0 || personName.includes(item) ? (
-                <div className="col-sm-3">
-                  <ProfilePicture imageSrc="" name="Issam" role={item} />
-                </div>
-              ) : null}
+              {/* {personName.length === 0 || personName.includes(item) ? (
+               
+              ) : null} */}
 
 
             </React.Fragment>
