@@ -1,46 +1,8 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+It is under the supervision of the Ministry of Health in order to reduce violence against women and create a communication network between those concerned. I used React, django, redux, DRF and openAi.
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `yarn start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+<img width="917" alt="Screenshot 2024-03-04 153734" src="https://github.com/Oussama-elamraoui/Fev-Front/assets/146080426/11acdd6e-a895-4a40-9041-35abac83bf01">
+<img width="925" alt="Screenshot 2024-03-04 153709" src="https://github.com/Oussama-elamraoui/Fev-Front/assets/146080426/6e37c004-72f3-4e8a-865b-1be045056817">
+<img width="891" alt="Screenshot 2024-03-04 153636" src="https://github.com/Oussama-elamraoui/Fev-Front/assets/146080426/2de8e3ee-6879-42ab-be81-53cbc511b25e">
+<img width="910" alt="Screenshot 2024-03-04 153614" src="https://github.com/Oussama-elamraoui/Fev-Front/assets/146080426/5310f9e5-e016-4820-b785-f07a0fc49e88">
+<img width="916" alt="Screenshot 2024-03-04 153539" src="https://github.com/Oussama-elamraoui/Fev-Front/assets/146080426/9a940a62-56e6-4784-bad9-9ea5c1fc9880">
